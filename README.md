@@ -60,6 +60,15 @@ TrainingLeveling/
 - Streak giornaliera
 - Dashboard progresso con storico recente
 
+## Immagine Levellino Personalizzata
+
+Per usare un artwork come quello che mi hai mostrato:
+
+1. Salva il file immagine in `frontend/public/levellino-chibi.png`
+2. Riavvia il frontend se e gia in esecuzione
+
+Il componente usera automaticamente l'immagine. Se manca il file, torna al badge `LV` come fallback.
+
 ## API Disponibili
 
 - `GET /api/health`
@@ -98,6 +107,9 @@ cd backend
 copy .env.example .env
 cargo run
 ```
+
+Nota: se non crei `.env`, il backend usa in automatico questo default locale:
+`mysql://app:app_password@localhost:3306/training_leveling`
 
 ### 3) Frontend React
 

@@ -1,8 +1,12 @@
+import { useState } from "react";
+
 interface LevellinoGuideProps {
   text: string;
 }
 
 export function LevellinoGuide({ text }: LevellinoGuideProps) {
+  const [imageLoaded, setImageLoaded] = useState(true);
+
   return (
     <section className="relative overflow-hidden rounded-3xl border border-aura/40 bg-ink/80 p-6 shadow-aura backdrop-blur-sm">
       <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-aura/20 blur-2xl" />
@@ -10,8 +14,19 @@ export function LevellinoGuide({ text }: LevellinoGuideProps) {
 
       <div className="relative flex items-center gap-4">
         <div className="animate-floaty">
-          <div className="h-20 w-20 animate-pulseAura rounded-full bg-gradient-to-br from-gold via-flame to-aura p-1">
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-ink text-2xl font-black text-sky">LV</div>
+          <div className="h-20 w-20 animate-pulseAura overflow-hidden rounded-full bg-gradient-to-br from-gold via-flame to-aura p-1">
+            {imageLoaded ? (
+              <img
+                src="/levellino-chibi.png"
+                alt="Levellino chibi"
+                className="h-full w-full rounded-full object-cover"
+                onError={() => setImageLoaded(false)}
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center rounded-full bg-ink text-2xl font-black text-sky">
+                LV
+              </div>
+            )}
           </div>
         </div>
 
