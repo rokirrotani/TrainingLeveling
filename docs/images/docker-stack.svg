@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1300" height="560" viewBox="0 0 1300 560" role="img" aria-label="Docker Stack">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#0284c7"/>
+    </marker>
+    <style>
+      .bg { fill: #0b1220; }
+      .title { font: 700 36px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+      .box { fill: #111827; stroke: #38bdf8; stroke-width: 2; rx: 14; }
+      .h { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+      .t { font: 500 15px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .line { stroke: #7dd3fc; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1300" height="560" class="bg"/>
+  <text x="40" y="58" class="title">Docker / Runtime Topology</text>
+
+  <rect x="70" y="150" width="220" height="120" class="box"/>
+  <text x="96" y="195" class="h">Browser</text>
+  <text x="96" y="223" class="t">localhost:4173 or 5173</text>
+
+  <rect x="380" y="120" width="280" height="180" class="box"/>
+  <text x="410" y="164" class="h">Frontend Container</text>
+  <text x="410" y="192" class="t">Nginx static serving dist/</text>
+  <text x="410" y="218" class="t">Calls API /api/*</text>
+
+  <rect x="730" y="120" width="280" height="180" class="box"/>
+  <text x="760" y="164" class="h">Backend Container</text>
+  <text x="760" y="192" class="t">Rust Axum API :8080</text>
+  <text x="760" y="218" class="t">Migrations at startup</text>
+
+  <rect x="1050" y="150" width="200" height="120" class="box"/>
+  <text x="1078" y="195" class="h">SQLite Volume</text>
+  <text x="1078" y="223" class="t">/app/data/*.db</text>
+
+  <path d="M290 210 L380 210" class="line"/>
+  <path d="M660 210 L730 210" class="line"/>
+  <path d="M1010 210 L1050 210" class="line"/>
+
+  <rect x="380" y="350" width="870" height="140" class="box"/>
+  <text x="410" y="392" class="h">Ports and Mapping</text>
+  <text x="410" y="422" class="t">Frontend: 4173 -> 80 | Backend: 8080 -> 8080</text>
+  <text x="410" y="450" class="t">In sviluppo locale senza Docker: Frontend 5173 e Backend 8080</text>
+</svg>

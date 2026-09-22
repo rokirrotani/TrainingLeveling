@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="700" viewBox="0 0 1400 700" role="img" aria-label="Code Structure Map">
+  <defs>
+    <style>
+      .bg { fill: #f8fafc; }
+      .title { font: 700 40px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .card { fill: #ffffff; stroke: #0ea5e9; stroke-width: 2; rx: 16; }
+      .h { font: 700 24px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .t { font: 500 17px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .line { stroke: #0284c7; stroke-width: 3; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="700" class="bg"/>
+  <text x="40" y="62" class="title">Code Structure Map</text>
+
+  <rect x="50" y="110" width="400" height="540" class="card"/>
+  <text x="80" y="160" class="h">frontend/</text>
+  <text x="80" y="195" class="t">src/App.tsx</text>
+  <text x="80" y="225" class="t">src/components/LevellinoGuide.tsx</text>
+  <text x="80" y="255" class="t">src/components/OnboardingForm.tsx</text>
+  <text x="80" y="285" class="t">src/components/Dashboard.tsx</text>
+  <text x="80" y="315" class="t">src/api/client.ts</text>
+  <text x="80" y="345" class="t">src/hooks/useProgress.ts</text>
+  <text x="80" y="375" class="t">src/utils/storage.ts</text>
+  <text x="80" y="405" class="t">src/types.ts</text>
+  <text x="80" y="435" class="t">tailwind.config.js</text>
+  <text x="80" y="465" class="t">vite.config.ts</text>
+
+  <rect x="500" y="110" width="420" height="540" class="card"/>
+  <text x="530" y="160" class="h">backend/</text>
+  <text x="530" y="195" class="t">src/main.rs</text>
+  <text x="530" y="225" class="t">src/config.rs</text>
+  <text x="530" y="255" class="t">src/state.rs</text>
+  <text x="530" y="285" class="t">src/models.rs</text>
+  <text x="530" y="315" class="t">src/routes/mod.rs</text>
+  <text x="530" y="345" class="t">src/routes/onboarding.rs</text>
+  <text x="530" y="375" class="t">src/routes/progress.rs</text>
+  <text x="530" y="405" class="t">src/services/leveling.rs</text>
+  <text x="530" y="435" class="t">migrations/001_init.sql</text>
+  <text x="530" y="465" class="t">Cargo.toml</text>
+
+  <rect x="970" y="110" width="380" height="540" class="card"/>
+  <text x="1000" y="160" class="h">project root/</text>
+  <text x="1000" y="195" class="t">README.md</text>
+  <text x="1000" y="225" class="t">docker-compose.yml</text>
+  <text x="1000" y="255" class="t">.env.example</text>
+  <text x="1000" y="285" class="t">docs/images/*.svg</text>
+
+  <line x1="450" y1="380" x2="500" y2="380" class="line"/>
+  <line x1="920" y1="380" x2="970" y2="380" class="line"/>
+</svg>

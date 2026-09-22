@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="540" viewBox="0 0 1200 540" role="img" aria-label="Database Schema">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#1d4ed8"/>
+    </marker>
+    <style>
+      .bg { fill: #eef2ff; }
+      .title { font: 700 36px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .table { fill: #ffffff; stroke: #1d4ed8; stroke-width: 2; rx: 14; }
+      .th { font: 700 20px 'Segoe UI', Arial, sans-serif; fill: #0f172a; }
+      .col { font: 500 15px 'Segoe UI', Arial, sans-serif; fill: #334155; }
+      .line { stroke: #1d4ed8; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+      .note { font: 500 16px 'Segoe UI', Arial, sans-serif; fill: #1e293b; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="540" class="bg"/>
+  <text x="40" y="58" class="title">Database Schema (SQLite)</text>
+
+  <rect x="70" y="120" width="470" height="340" class="table"/>
+  <text x="96" y="160" class="th">user_profiles</text>
+  <text x="96" y="198" class="col">id (PK, autoincrement)</text>
+  <text x="96" y="226" class="col">nickname</text>
+  <text x="96" y="254" class="col">age</text>
+  <text x="96" y="282" class="col">height_cm</text>
+  <text x="96" y="310" class="col">weight_kg</text>
+  <text x="96" y="338" class="col">goal</text>
+  <text x="96" y="366" class="col">activity_level</text>
+  <text x="96" y="394" class="col">food_style</text>
+  <text x="96" y="422" class="col">created_at</text>
+
+  <rect x="670" y="120" width="470" height="340" class="table"/>
+  <text x="696" y="160" class="th">daily_logs</text>
+  <text x="696" y="198" class="col">id (PK, autoincrement)</text>
+  <text x="696" y="226" class="col">user_id (FK -> user_profiles.id)</text>
+  <text x="696" y="254" class="col">log_date</text>
+  <text x="696" y="282" class="col">workout_done</text>
+  <text x="696" y="310" class="col">nutrition_done</text>
+  <text x="696" y="338" class="col">hydration_done</text>
+  <text x="696" y="366" class="col">notes</text>
+  <text x="696" y="394" class="col">xp_gained</text>
+  <text x="696" y="422" class="col">created_at</text>
+
+  <path d="M540 250 L670 250" class="line"/>
+  <text x="530" y="490" class="note">Relazione: un utente ha molti log giornalieri (1:N)</text>
+</svg>

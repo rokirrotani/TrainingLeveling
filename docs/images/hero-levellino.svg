@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="620" viewBox="0 0 1400 620" role="img" aria-label="Levellino Hero Banner">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="55%" stop-color="#111c3a"/>
+      <stop offset="100%" stop-color="#1e3a8a"/>
+    </linearGradient>
+    <radialGradient id="orb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/>
+    </radialGradient>
+    <style>
+      .title { font: 800 72px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; letter-spacing: 1px; }
+      .sub { font: 700 34px 'Segoe UI', Arial, sans-serif; fill: #7dd3fc; }
+      .desc { font: 500 22px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .chip { fill: #0f172a; stroke: #38bdf8; stroke-width: 2; rx: 14; }
+      .chiptext { font: 600 18px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="620" fill="url(#bg)"/>
+  <circle cx="1160" cy="130" r="160" fill="url(#orb)"/>
+  <circle cx="180" cy="520" r="220" fill="url(#orb)" opacity="0.5"/>
+
+  <text x="80" y="140" class="title">TrainingLeveling</text>
+  <text x="80" y="190" class="sub">Levellino Chibi Progress System</text>
+  <text x="80" y="250" class="desc">Onboarding personalizzato, missioni giornaliere, XP, livelli e streak</text>
+  <text x="80" y="285" class="desc">in una mobile-web app pronta per crescita e deploy.</text>
+
+  <rect x="80" y="340" width="280" height="54" class="chip"/>
+  <text x="102" y="375" class="chiptext">React + TypeScript + Tailwind</text>
+
+  <rect x="380" y="340" width="250" height="54" class="chip"/>
+  <text x="402" y="375" class="chiptext">Rust + Axum + SQLx</text>
+
+  <rect x="650" y="340" width="210" height="54" class="chip"/>
+  <text x="672" y="375" class="chiptext">SQLite + Docker</text>
+
+  <g transform="translate(930,220)">
+    <ellipse cx="170" cy="230" rx="190" ry="60" fill="#020617" opacity="0.45"/>
+    <circle cx="170" cy="110" r="86" fill="#111827" stroke="#38bdf8" stroke-width="4"/>
+    <circle cx="145" cy="105" r="10" fill="#93c5fd"/>
+    <circle cx="195" cy="105" r="10" fill="#93c5fd"/>
+    <path d="M145 140 Q170 160 195 140" fill="none" stroke="#93c5fd" stroke-width="6" stroke-linecap="round"/>
+    <rect x="108" y="190" width="124" height="66" rx="20" fill="#1e293b" stroke="#7dd3fc" stroke-width="3"/>
+    <rect x="95" y="220" width="32" height="80" rx="14" fill="#1e293b"/>
+    <rect x="213" y="220" width="32" height="80" rx="14" fill="#1e293b"/>
+    <rect x="126" y="265" width="36" height="90" rx="14" fill="#0f172a"/>
+    <rect x="178" y="265" width="36" height="90" rx="14" fill="#0f172a"/>
+    <path d="M75 210 L20 180 L40 150 L90 185 Z" fill="#1d4ed8" stroke="#7dd3fc" stroke-width="3"/>
+    <path d="M265 210 L320 180 L300 150 L250 185 Z" fill="#1d4ed8" stroke="#7dd3fc" stroke-width="3"/>
+  </g>
+
+  <text x="80" y="570" class="desc">Nota: usa questa grafica originale o sostituiscila con una tua immagine con diritti/licenza.</text>
+</svg>

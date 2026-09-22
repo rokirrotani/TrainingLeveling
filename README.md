@@ -1,181 +1,48 @@
-# TrainingLeveling
+<p align="center">
+  <img src="docs/images/hero-levellino.svg" alt="TrainingLeveling Hero" width="100%" />
+</p>
 
-TrainingLeveling e una mobile-web app full-stack che combina:
-- onboarding guidato da Levellino
-- piani personalizzati allenamento + alimentazione
-- sistema XP/Level stile RPG
-- monitoraggio giornaliero semplice e motivante
+<h1 align="center">TrainingLeveling</h1>
 
----
+<p align="center">
+  Mobile-web app con onboarding guidato, piani personalizzati, missioni giornaliere, XP e level-up.
+</p>
 
-## 1) Visione del Progetto
-
-Obiettivo: aiutare l'utente a raggiungere i propri target fitness/alimentazione con una UX leggera, guidata e ad alta costanza.
-
-Punti chiave:
-- personalizzazione iniziale tramite domande guidate
-- loop giornaliero con missioni rapide
-- feedback immediato su progresso, livello e streak
-- architettura semplice da avviare in locale e pronta per deploy
+<p align="center">
+  <img alt="Frontend" src="https://img.shields.io/badge/Frontend-React%20%2B%20TypeScript-0ea5e9" />
+  <img alt="Backend" src="https://img.shields.io/badge/Backend-Rust%20%2B%20Axum-1d4ed8" />
+  <img alt="Database" src="https://img.shields.io/badge/Database-SQLite-334155" />
+  <img alt="Runtime" src="https://img.shields.io/badge/Runtime-Docker%20ready-0f172a" />
+</p>
 
 ---
 
-## 2) Architettura Visuale
+## Nota su immagine "Solo Leveling"
 
-### Overview generale
-
-![Architecture Overview](docs/images/architecture-overview.svg)
-
-### Flusso onboarding
-
-![Onboarding Flow](docs/images/onboarding-flow.svg)
-
-### Loop di level-up giornaliero
-
-![Daily Leveling Loop](docs/images/daily-level-loop.svg)
+Per policy copyright non includo immagini ufficiali protette da franchise nel repository.
+Hai pero due opzioni:
+1. Usare il visual hero originale gia presente in [docs/images/hero-levellino.svg](docs/images/hero-levellino.svg).
+2. Sostituire il file hero con una tua immagine licenziata/di cui possiedi i diritti.
 
 ---
 
-## 3) Stack Tecnologico
+## Indice
 
-- Frontend: React + TypeScript + Vite + TailwindCSS
-- Backend: Rust + Axum + SQLx
-- Database locale: SQLite (zero setup)
-- Containerizzazione: Docker + Docker Compose (opzionale)
-
-Perche SQLite ora:
-- niente credenziali DB da gestire in locale
-- avvio rapido immediato
-- file singolo facile da backup
-
-Quando passare a MySQL/PostgreSQL:
-- multi-utente ad alto traffico
-- analytics avanzate
-- scalabilita orizzontale
+- [Quick Start](#quick-start)
+- [Percorso Utente e Tecnico](#percorso-utente-e-tecnico)
+- [Architettura Visuale Completa](#architettura-visuale-completa)
+- [Mappa Codice con Collegamenti](#mappa-codice-con-collegamenti)
+- [Docker Topology](#docker-topology)
+- [Database Schema](#database-schema)
+- [API Endpoints](#api-endpoints)
+- [Runbook Avvio](#runbook-avvio)
+- [Troubleshooting](#troubleshooting)
 
 ---
 
-## 4) Mappa dei Collegamenti (Punto a Punto)
+## Quick Start
 
-### Frontend
-- Entry app: [frontend/src/main.tsx](frontend/src/main.tsx)
-- Composizione schermata principale: [frontend/src/App.tsx](frontend/src/App.tsx)
-- Guida Levellino: [frontend/src/components/LevellinoGuide.tsx](frontend/src/components/LevellinoGuide.tsx)
-- Onboarding: [frontend/src/components/OnboardingForm.tsx](frontend/src/components/OnboardingForm.tsx)
-- Dashboard e check giornaliero: [frontend/src/components/Dashboard.tsx](frontend/src/components/Dashboard.tsx)
-- API client: [frontend/src/api/client.ts](frontend/src/api/client.ts)
-- Hook progresso: [frontend/src/hooks/useProgress.ts](frontend/src/hooks/useProgress.ts)
-- Persistenza locale: [frontend/src/utils/storage.ts](frontend/src/utils/storage.ts)
-
-### Backend
-- Bootstrap server + middleware: [backend/src/main.rs](backend/src/main.rs)
-- Config env: [backend/src/config.rs](backend/src/config.rs)
-- Stato app (pool DB): [backend/src/state.rs](backend/src/state.rs)
-- Router API: [backend/src/routes/mod.rs](backend/src/routes/mod.rs)
-- Route health: [backend/src/routes/health.rs](backend/src/routes/health.rs)
-- Route onboarding: [backend/src/routes/onboarding.rs](backend/src/routes/onboarding.rs)
-- Route progress/log: [backend/src/routes/progress.rs](backend/src/routes/progress.rs)
-- Logica XP/Level: [backend/src/services/leveling.rs](backend/src/services/leveling.rs)
-- Migrazione schema DB: [backend/migrations/001_init.sql](backend/migrations/001_init.sql)
-
-### Config progetto
-- Docker compose: [docker-compose.yml](docker-compose.yml)
-- Env root esempio: [.env.example](.env.example)
-- Env backend esempio: [backend/.env.example](backend/.env.example)
-- Env frontend esempio: [frontend/.env.example](frontend/.env.example)
-
----
-
-## 5) Flusso Applicativo End-to-End
-
-### 5.1 Onboarding
-1. Utente compila form guidato (nickname, obiettivo, preferenze).
-2. Frontend invia `POST /api/onboarding`.
-3. Backend genera piano personalizzato con regole di domain logic.
-4. Backend salva profilo utente nel DB.
-5. Frontend salva `user_id` e mostra dashboard con piano.
-
-### 5.2 Daily Loop
-1. Utente segna missioni giornaliere completate.
-2. Frontend invia `POST /api/progress/log`.
-3. Backend calcola XP in base a missioni completate.
-4. Backend salva log giornaliero.
-5. Frontend aggiorna stato con `GET /api/progress/:user_id`.
-6. Utente vede livello, XP, streak e stato missione.
-
----
-
-## 6) Contratti API (Chiaro e Diretto)
-
-### GET /api/health
-- Uso: check rapido stato backend
-- Risposta esempio:
-
-```json
-{
-  "status": "ok",
-  "service": "training-leveling-api"
-}
-```
-
-### POST /api/onboarding
-- Uso: creazione profilo + piano iniziale
-- Body esempio:
-
-```json
-{
-  "nickname": "ShadowRunner",
-  "age": 26,
-  "height_cm": 178,
-  "weight_kg": 74,
-  "goal": "muscle_gain",
-  "activity_level": "intermediate",
-  "food_style": "balanced",
-  "preferences": ["home_workout", "quick_meals"]
-}
-```
-
-### POST /api/progress/log
-- Uso: salvataggio check giornaliero
-- Body esempio:
-
-```json
-{
-  "user_id": 1,
-  "log_date": "2026-09-22",
-  "workout_done": true,
-  "nutrition_done": true,
-  "hydration_done": false,
-  "notes": "Oggi buona energia"
-}
-```
-
-### GET /api/progress/:user_id
-- Uso: recupero progresso completo utente
-- Include: XP totale, livello, streak, log recenti
-
----
-
-## 7) Modello Dati
-
-Tabelle principali:
-- `user_profiles`
-  - profilo e preferenze base utente
-- `daily_logs`
-  - missioni giornaliere, XP ottenuto, nota, data
-
-Relazione:
-- `daily_logs.user_id` -> `user_profiles.id` (1:N)
-
----
-
-## 8) Setup Locale (Consigliato)
-
-Prerequisiti:
-- Node.js installato
-- Rust toolchain installata
-
-### 8.1 Backend
+### Avvio locale diretto
 
 ```bash
 cd backend
@@ -183,12 +50,7 @@ copy .env.example .env
 cargo run
 ```
 
-Backend API su:
-- http://localhost:8080/api/health
-
-### 8.2 Frontend
-
-In un secondo terminale:
+Secondo terminale:
 
 ```bash
 cd frontend
@@ -197,100 +59,210 @@ npm install
 npm run dev
 ```
 
-Frontend su:
-- http://localhost:5173
+URL:
+- Frontend: http://localhost:5173
+- Backend health: http://localhost:8080/api/health
 
----
-
-## 9) Setup con Docker (Opzionale)
-
-Se Docker Desktop e disponibile:
+### Avvio con Docker (se installato)
 
 ```bash
 docker compose up --build
 ```
 
-Servizi:
+URL:
 - Frontend: http://localhost:4173
-- Backend: http://localhost:8080/api/health
+- Backend health: http://localhost:8080/api/health
 
 ---
 
-## 10) Immagine Levellino Personalizzata
+## Percorso Utente e Tecnico
 
-Per usare un artwork custom:
-1. salva l'immagine in `frontend/public/levellino-chibi.png`
-2. riavvia frontend
+### User Journey
 
-Il componente Levellino usera automaticamente l'immagine.
-Se il file manca, resta il fallback grafico LV.
+```mermaid
+flowchart LR
+    A[Utente apre app] --> B[Onboarding con Levellino]
+    B --> C[Scelta obiettivo e preferenze]
+    C --> D[Generazione piano personalizzato]
+    D --> E[Check giornaliero missioni]
+    E --> F[XP, livello, streak]
+    F --> G[Monitoraggio progressi]
+    G --> E
+```
 
----
+### Technical Request Flow
 
-## 11) Struttura Cartelle
+```mermaid
+sequenceDiagram
+    participant U as User Browser
+    participant F as Frontend React
+    participant B as Backend Rust
+    participant D as SQLite
 
-```text
-TrainingLeveling/
-  backend/
-    migrations/
-      001_init.sql
-    src/
-      routes/
-      services/
-      config.rs
-      main.rs
-      models.rs
-      state.rs
-    .env.example
-    Cargo.toml
-    Dockerfile
+    U->>F: Compila onboarding
+    F->>B: POST /api/onboarding
+    B->>D: INSERT user_profiles
+    B-->>F: user_id + piano
 
-  frontend/
-    public/
-    src/
-      api/
-      components/
-      hooks/
-      utils/
-      App.tsx
-      main.tsx
-      styles.css
-      types.ts
-    .env.example
-    package.json
-    tailwind.config.js
-    vite.config.ts
-    Dockerfile
+    U->>F: Invia check giornaliero
+    F->>B: POST /api/progress/log
+    B->>D: INSERT daily_logs
+    B-->>F: log creato
 
-  docs/
-    images/
-      architecture-overview.svg
-      onboarding-flow.svg
-      daily-level-loop.svg
-
-  docker-compose.yml
-  .env.example
-  README.md
+    F->>B: GET /api/progress/:id
+    B->>D: SELECT progress + logs
+    B-->>F: xp, level, streak, storico
 ```
 
 ---
 
-## 12) Roadmap Evolutiva
+## Architettura Visuale Completa
 
-- autenticazione JWT + refresh token
-- profilo avanzato con macro/calorie dinamiche
-- chat Levellino AI con coaching contestuale
-- notifiche push missione giornaliera
-- analytics trend settimanale/mensile
-- migrazione DB a MySQL/PostgreSQL per scalare
+### 1) Overview architettura
+
+![Architecture Overview](docs/images/architecture-overview.svg)
+
+### 2) Flusso onboarding
+
+![Onboarding Flow](docs/images/onboarding-flow.svg)
+
+### 3) Daily leveling loop
+
+![Daily Leveling Loop](docs/images/daily-level-loop.svg)
+
+### 4) Mappa struttura codice
+
+![Code Structure Map](docs/images/code-structure-map.svg)
+
+### 5) Topologia Docker/runtime
+
+![Docker Stack](docs/images/docker-stack.svg)
+
+### 6) Schema database
+
+![Database Schema](docs/images/db-schema.svg)
 
 ---
 
-## 13) Stato Attuale
+## Mappa Codice con Collegamenti
 
-La base e gia operativa end-to-end:
-- frontend completo
-- backend API completo
-- database locale auto-migrato
-- UX con onboarding, piano, check giornaliero e leveling
-- documentazione tecnica completa con diagrammi
+### Frontend
+
+| Modulo | Scopo |
+|---|---|
+| [frontend/src/main.tsx](frontend/src/main.tsx) | Entry point React |
+| [frontend/src/App.tsx](frontend/src/App.tsx) | Shell principale + routing UI base |
+| [frontend/src/components/LevellinoGuide.tsx](frontend/src/components/LevellinoGuide.tsx) | Hero/guida Levellino |
+| [frontend/src/components/OnboardingForm.tsx](frontend/src/components/OnboardingForm.tsx) | Form onboarding utente |
+| [frontend/src/components/Dashboard.tsx](frontend/src/components/Dashboard.tsx) | Dashboard, missioni, progresso |
+| [frontend/src/api/client.ts](frontend/src/api/client.ts) | Chiamate HTTP al backend |
+| [frontend/src/hooks/useProgress.ts](frontend/src/hooks/useProgress.ts) | Hook stato progresso |
+| [frontend/src/utils/storage.ts](frontend/src/utils/storage.ts) | Persistenza locale user/onboarding |
+| [frontend/src/types.ts](frontend/src/types.ts) | Tipi TypeScript condivisi |
+
+### Backend
+
+| Modulo | Scopo |
+|---|---|
+| [backend/src/main.rs](backend/src/main.rs) | Bootstrap server, CORS, migration startup |
+| [backend/src/config.rs](backend/src/config.rs) | Config ENV e default runtime |
+| [backend/src/state.rs](backend/src/state.rs) | Stato globale app (pool DB) |
+| [backend/src/models.rs](backend/src/models.rs) | DTO request/response + entity log |
+| [backend/src/routes/mod.rs](backend/src/routes/mod.rs) | Registrazione route API |
+| [backend/src/routes/health.rs](backend/src/routes/health.rs) | Endpoint health |
+| [backend/src/routes/onboarding.rs](backend/src/routes/onboarding.rs) | Creazione profilo + piano |
+| [backend/src/routes/progress.rs](backend/src/routes/progress.rs) | Log giornaliero + progress retrieval |
+| [backend/src/services/leveling.rs](backend/src/services/leveling.rs) | Regole XP e level computation |
+| [backend/migrations/001_init.sql](backend/migrations/001_init.sql) | Schema SQLite iniziale |
+
+### Infra/Config
+
+| File | Scopo |
+|---|---|
+| [docker-compose.yml](docker-compose.yml) | Runtime container frontend/backend + volume SQLite |
+| [backend/.env.example](backend/.env.example) | Env backend di riferimento |
+| [frontend/.env.example](frontend/.env.example) | Env frontend di riferimento |
+| [.env.example](.env.example) | Template env root |
+
+---
+
+## Docker Topology
+
+Composizione stack docker:
+- frontend container serve asset statici
+- backend container espone API Rust
+- volume sqlite persistente per dati app
+
+File chiave:
+- [docker-compose.yml](docker-compose.yml)
+- [backend/Dockerfile](backend/Dockerfile)
+- [frontend/Dockerfile](frontend/Dockerfile)
+
+---
+
+## Database Schema
+
+Schema attuale (SQLite):
+- `user_profiles`: profilo base utente
+- `daily_logs`: log giornalieri e XP
+- relazione 1:N su `user_id`
+
+Schema definito in:
+- [backend/migrations/001_init.sql](backend/migrations/001_init.sql)
+
+---
+
+## API Endpoints
+
+### GET /api/health
+Controllo stato backend.
+
+### POST /api/onboarding
+Crea profilo utente e ritorna piano iniziale.
+
+### POST /api/progress/log
+Registra completamento missioni giornaliere e calcola XP.
+
+### GET /api/progress/:user_id
+Ritorna livello, XP, streak e storico log.
+
+---
+
+## Runbook Avvio
+
+### Modalita sviluppo
+1. Avvia backend da [backend](backend)
+2. Avvia frontend da [frontend](frontend)
+3. Apri URL frontend
+4. Verifica health API
+
+### Modalita container
+1. Verifica docker installato
+2. Avvia `docker compose up --build`
+3. Apri frontend su porta 4173
+
+---
+
+## Troubleshooting
+
+### Errore `Failed to fetch` nel frontend
+- verifica backend su http://localhost:8080/api/health
+- controlla [frontend/.env](frontend/.env) con `VITE_API_BASE_URL=http://localhost:8080`
+
+### Porta occupata
+- backend usa 8080
+- frontend usa 5173 (dev) o 4173 (docker)
+
+### DB non accessibile
+- in locale usa SQLite automatico (nessuna credenziale richiesta)
+- controlla file DB in [backend/training_leveling.db](backend/training_leveling.db)
+
+---
+
+## Estensioni Future
+
+- auth JWT + refresh token
+- motore piani avanzato con macro/calorie
+- notifiche e reminder
+- analytics avanzate
+- migrazione opzionale a PostgreSQL/MySQL per scala enterprise
