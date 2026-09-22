@@ -1,4 +1,4 @@
-use chrono::{DateTime, NaiveDate, Utc};
+use chrono::NaiveDate;
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
@@ -38,7 +38,7 @@ pub struct DailyLog {
     pub hydration_done: bool,
     pub notes: String,
     pub xp_gained: i32,
-    pub created_at: DateTime<Utc>,
+    pub created_at: String,
 }
 
 #[derive(Debug, Deserialize)]

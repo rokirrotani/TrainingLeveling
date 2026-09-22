@@ -8,7 +8,7 @@ La guida iniziale e Levellino (chibi coach), che raccoglie input utente e avvia 
 
 - Frontend: React + TypeScript + TailwindCSS + Vite
 - Backend: Rust + Axum + SQLx
-- Database: MySQL 8
+- Database: SQLite (locale, zero setup)
 - Orchestrazione locale e deploy base: Docker + Docker Compose
 
 ## Struttura Progetto
@@ -88,19 +88,13 @@ docker compose up --build
 
 - Frontend: `http://localhost:4173`
 - Backend: `http://localhost:8080/api/health`
-- MySQL: `localhost:3306`
+- DB SQLite persistito in volume Docker `sqlite_data`
 
 Le migrazioni SQL vengono applicate all'avvio del backend e il DB viene inizializzato automaticamente.
 
 ## Setup Manuale (Senza Docker)
 
-### 1) Database
-
-- Avvia MySQL 8
-- Crea DB `training_leveling`
-- Esegui lo script `backend/migrations/001_init.sql`
-
-### 2) Backend Rust
+### 1) Backend Rust
 
 ```bash
 cd backend
@@ -109,9 +103,9 @@ cargo run
 ```
 
 Nota: se non crei `.env`, il backend usa in automatico questo default locale:
-`mysql://app:app_password@localhost:3306/training_leveling`
+`sqlite://training_leveling.db`
 
-### 3) Frontend React
+### 2) Frontend React
 
 ```bash
 cd frontend
@@ -130,7 +124,7 @@ Strategia consigliata:
 
 1. Frontend su Vercel/Netlify (build Vite)
 2. Backend Rust container su Render/Fly.io/Railway/Azure Container Apps
-3. MySQL gestito su servizio cloud (PlanetScale, Railway MySQL, Azure Database for MySQL)
+3. SQLite per MVP, poi migrazione a MySQL/PostgreSQL quando passi a multi-utente avanzato
 
 ### Variabili principali
 

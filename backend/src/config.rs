@@ -19,7 +19,7 @@ impl AppConfig {
             .context("APP_PORT must be a valid u16 number")?;
 
         let database_url = env::var("DATABASE_URL")
-            .unwrap_or_else(|_| "mysql://app:app_password@localhost:3306/training_leveling".to_string());
+            .unwrap_or_else(|_| "sqlite://training_leveling.db".to_string());
 
         let frontend_origin = env::var("FRONTEND_ORIGIN")
             .unwrap_or_else(|_| "http://localhost:5173".to_string());

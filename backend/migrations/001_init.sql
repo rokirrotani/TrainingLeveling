@@ -1,28 +1,25 @@
 CREATE TABLE IF NOT EXISTS user_profiles (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    nickname VARCHAR(120) NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nickname TEXT NOT NULL,
     age INT NOT NULL,
     height_cm INT NOT NULL,
-    weight_kg DECIMAL(6,2) NOT NULL,
-    goal VARCHAR(40) NOT NULL,
-    activity_level VARCHAR(30) NOT NULL,
-    food_style VARCHAR(30) NOT NULL,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    weight_kg REAL NOT NULL,
+    goal TEXT NOT NULL,
+    activity_level TEXT NOT NULL,
+    food_style TEXT NOT NULL,
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS daily_logs (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    user_id INTEGER NOT NULL,
     log_date DATE NOT NULL,
-    workout_done BOOLEAN NOT NULL DEFAULT FALSE,
-    nutrition_done BOOLEAN NOT NULL DEFAULT FALSE,
-    hydration_done BOOLEAN NOT NULL DEFAULT FALSE,
+    workout_done INTEGER NOT NULL DEFAULT 0,
+    nutrition_done INTEGER NOT NULL DEFAULT 0,
+    hydration_done INTEGER NOT NULL DEFAULT 0,
     notes TEXT NOT NULL,
     xp_gained INT NOT NULL DEFAULT 0,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_daily_logs_user
-        FOREIGN KEY (user_id)
-        REFERENCES user_profiles(id)
-        ON DELETE CASCADE,
-    UNIQUE KEY uq_daily_user_date (user_id, log_date)
+    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES user_profiles(id) ON DELETE CASCADE,
+    UNIQUE (user_id, log_date)
 );

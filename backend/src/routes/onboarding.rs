@@ -32,7 +32,7 @@ pub async fn create_profile(
         .await
         .map_err(internal_error)?;
 
-    let user_id = result.last_insert_id() as i64;
+    let user_id = result.last_insert_rowid();
 
     Ok((
         StatusCode::CREATED,

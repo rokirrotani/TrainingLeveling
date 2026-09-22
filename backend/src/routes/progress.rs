@@ -33,7 +33,7 @@ pub async fn create_daily_log(
         .await
         .map_err(internal_error)?;
 
-    let inserted_id = result.last_insert_id() as i64;
+    let inserted_id = result.last_insert_rowid();
 
     let record = sqlx::query_as::<_, DailyLog>(
         r#"
@@ -86,7 +86,7 @@ pub async fn get_progress(
         FROM daily_logs
         WHERE user_id = ?
           AND xp_gained > 0
-          AND log_date >= (CURDATE() - INTERVAL 6 DAY)
+                    AND log_date >= date('now', '-6 day')
     "#,
     )
     .bind(user_id)

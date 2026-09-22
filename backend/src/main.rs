@@ -7,7 +7,7 @@ mod state;
 use axum::http::{header, Method};
 use config::AppConfig;
 use routes::create_router;
-use sqlx::mysql::MySqlPoolOptions;
+use sqlx::sqlite::SqlitePoolOptions;
 use std::time::Duration;
 use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
@@ -23,7 +23,7 @@ async fn main() -> anyhow::Result<()> {
 
     let config = AppConfig::from_env()?;
 
-    let db = MySqlPoolOptions::new()
+    let db = SqlitePoolOptions::new()
         .max_connections(10)
         .acquire_timeout(Duration::from_secs(10))
         .connect(&config.database_url)
