@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="TrainingLeveling architecture overview">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#7dd3fc"/>
+    </marker>
+    <style>
+      .title { font: 700 30px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+      .label { font: 600 18px 'Segoe UI', Arial, sans-serif; fill: #e2e8f0; }
+      .desc { font: 400 14px 'Segoe UI', Arial, sans-serif; fill: #cbd5e1; }
+      .card { fill: #0b1220; stroke: #38bdf8; stroke-width: 2; rx: 18; }
+      .line { stroke: #7dd3fc; stroke-width: 3; fill: none; marker-end: url(#arrow); }
+    </style>
+  </defs>
+
+  <rect width="1200" height="520" fill="url(#bg)"/>
+  <text x="40" y="56" class="title">TrainingLeveling - Architecture Overview</text>
+
+  <rect x="70" y="130" width="230" height="170" class="card"/>
+  <text x="95" y="170" class="label">User Device</text>
+  <text x="95" y="198" class="desc">Mobile / Desktop Browser</text>
+  <text x="95" y="224" class="desc">Daily check-in + progress</text>
+
+  <rect x="360" y="110" width="260" height="210" class="card"/>
+  <text x="385" y="150" class="label">Frontend</text>
+  <text x="385" y="178" class="desc">React + TypeScript + Vite</text>
+  <text x="385" y="204" class="desc">UI Levellino + dashboard</text>
+  <text x="385" y="230" class="desc">API client fetch</text>
+
+  <rect x="680" y="110" width="260" height="210" class="card"/>
+  <text x="705" y="150" class="label">Backend API</text>
+  <text x="705" y="178" class="desc">Rust + Axum + SQLx</text>
+  <text x="705" y="204" class="desc">Onboarding + progress logic</text>
+  <text x="705" y="230" class="desc">XP + Level computation</text>
+
+  <rect x="970" y="130" width="180" height="170" class="card"/>
+  <text x="995" y="170" class="label">Database</text>
+  <text x="995" y="198" class="desc">SQLite local file</text>
+  <text x="995" y="224" class="desc">Auto migrations</text>
+
+  <path d="M300 215 L360 215" class="line"/>
+  <path d="M620 215 L680 215" class="line"/>
+  <path d="M940 215 L970 215" class="line"/>
+
+  <rect x="360" y="360" width="790" height="110" class="card"/>
+  <text x="385" y="398" class="label">Runtime Data Flow</text>
+  <text x="385" y="425" class="desc">1) User compila onboarding - 2) Frontend invia POST /api/onboarding - 3) Backend genera piano personalizzato - 4) SQLite salva profilo e log - 5) Frontend legge GET /api/progress/:id</text>
+</svg>

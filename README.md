@@ -1,100 +1,181 @@
 # TrainingLeveling
 
-TrainingLeveling e una mobile-web app full-stack per creare percorsi personalizzati di allenamento e alimentazione con una gamification a livelli stile RPG.
+TrainingLeveling e una mobile-web app full-stack che combina:
+- onboarding guidato da Levellino
+- piani personalizzati allenamento + alimentazione
+- sistema XP/Level stile RPG
+- monitoraggio giornaliero semplice e motivante
 
-La guida iniziale e Levellino (chibi coach), che raccoglie input utente e avvia il percorso personalizzato con missioni giornaliere, XP, level up e monitoraggio progresso.
+---
 
-## Stack Tecnologico
+## 1) Visione del Progetto
 
-- Frontend: React + TypeScript + TailwindCSS + Vite
+Obiettivo: aiutare l'utente a raggiungere i propri target fitness/alimentazione con una UX leggera, guidata e ad alta costanza.
+
+Punti chiave:
+- personalizzazione iniziale tramite domande guidate
+- loop giornaliero con missioni rapide
+- feedback immediato su progresso, livello e streak
+- architettura semplice da avviare in locale e pronta per deploy
+
+---
+
+## 2) Architettura Visuale
+
+### Overview generale
+
+![Architecture Overview](docs/images/architecture-overview.svg)
+
+### Flusso onboarding
+
+![Onboarding Flow](docs/images/onboarding-flow.svg)
+
+### Loop di level-up giornaliero
+
+![Daily Leveling Loop](docs/images/daily-level-loop.svg)
+
+---
+
+## 3) Stack Tecnologico
+
+- Frontend: React + TypeScript + Vite + TailwindCSS
 - Backend: Rust + Axum + SQLx
-- Database: SQLite (locale, zero setup)
-- Orchestrazione locale e deploy base: Docker + Docker Compose
+- Database locale: SQLite (zero setup)
+- Containerizzazione: Docker + Docker Compose (opzionale)
 
-## Struttura Progetto
+Perche SQLite ora:
+- niente credenziali DB da gestire in locale
+- avvio rapido immediato
+- file singolo facile da backup
 
+Quando passare a MySQL/PostgreSQL:
+- multi-utente ad alto traffico
+- analytics avanzate
+- scalabilita orizzontale
+
+---
+
+## 4) Mappa dei Collegamenti (Punto a Punto)
+
+### Frontend
+- Entry app: [frontend/src/main.tsx](frontend/src/main.tsx)
+- Composizione schermata principale: [frontend/src/App.tsx](frontend/src/App.tsx)
+- Guida Levellino: [frontend/src/components/LevellinoGuide.tsx](frontend/src/components/LevellinoGuide.tsx)
+- Onboarding: [frontend/src/components/OnboardingForm.tsx](frontend/src/components/OnboardingForm.tsx)
+- Dashboard e check giornaliero: [frontend/src/components/Dashboard.tsx](frontend/src/components/Dashboard.tsx)
+- API client: [frontend/src/api/client.ts](frontend/src/api/client.ts)
+- Hook progresso: [frontend/src/hooks/useProgress.ts](frontend/src/hooks/useProgress.ts)
+- Persistenza locale: [frontend/src/utils/storage.ts](frontend/src/utils/storage.ts)
+
+### Backend
+- Bootstrap server + middleware: [backend/src/main.rs](backend/src/main.rs)
+- Config env: [backend/src/config.rs](backend/src/config.rs)
+- Stato app (pool DB): [backend/src/state.rs](backend/src/state.rs)
+- Router API: [backend/src/routes/mod.rs](backend/src/routes/mod.rs)
+- Route health: [backend/src/routes/health.rs](backend/src/routes/health.rs)
+- Route onboarding: [backend/src/routes/onboarding.rs](backend/src/routes/onboarding.rs)
+- Route progress/log: [backend/src/routes/progress.rs](backend/src/routes/progress.rs)
+- Logica XP/Level: [backend/src/services/leveling.rs](backend/src/services/leveling.rs)
+- Migrazione schema DB: [backend/migrations/001_init.sql](backend/migrations/001_init.sql)
+
+### Config progetto
+- Docker compose: [docker-compose.yml](docker-compose.yml)
+- Env root esempio: [.env.example](.env.example)
+- Env backend esempio: [backend/.env.example](backend/.env.example)
+- Env frontend esempio: [frontend/.env.example](frontend/.env.example)
+
+---
+
+## 5) Flusso Applicativo End-to-End
+
+### 5.1 Onboarding
+1. Utente compila form guidato (nickname, obiettivo, preferenze).
+2. Frontend invia `POST /api/onboarding`.
+3. Backend genera piano personalizzato con regole di domain logic.
+4. Backend salva profilo utente nel DB.
+5. Frontend salva `user_id` e mostra dashboard con piano.
+
+### 5.2 Daily Loop
+1. Utente segna missioni giornaliere completate.
+2. Frontend invia `POST /api/progress/log`.
+3. Backend calcola XP in base a missioni completate.
+4. Backend salva log giornaliero.
+5. Frontend aggiorna stato con `GET /api/progress/:user_id`.
+6. Utente vede livello, XP, streak e stato missione.
+
+---
+
+## 6) Contratti API (Chiaro e Diretto)
+
+### GET /api/health
+- Uso: check rapido stato backend
+- Risposta esempio:
+
+```json
+{
+  "status": "ok",
+  "service": "training-leveling-api"
+}
 ```
-TrainingLeveling/
-	backend/
-		migrations/
-			001_init.sql
-		src/
-			routes/
-			services/
-			config.rs
-			main.rs
-			models.rs
-			state.rs
-		Cargo.toml
-		Dockerfile
-		.env.example
 
-	frontend/
-		src/
-			api/
-			components/
-			hooks/
-			utils/
-			App.tsx
-			main.tsx
-			styles.css
-			types.ts
-		package.json
-		tailwind.config.js
-		Dockerfile
-		.env.example
+### POST /api/onboarding
+- Uso: creazione profilo + piano iniziale
+- Body esempio:
 
-	docker-compose.yml
-	.env.example
-	.gitignore
-	README.md
+```json
+{
+  "nickname": "ShadowRunner",
+  "age": 26,
+  "height_cm": 178,
+  "weight_kg": 74,
+  "goal": "muscle_gain",
+  "activity_level": "intermediate",
+  "food_style": "balanced",
+  "preferences": ["home_workout", "quick_meals"]
+}
 ```
 
-## Funzionalita MVP Incluse
+### POST /api/progress/log
+- Uso: salvataggio check giornaliero
+- Body esempio:
 
-- Onboarding personalizzato con Levellino
-- Form guidato con obiettivo, livello attività, preferenze e stile alimentare
-- Generazione piano iniziale custom (allenamento + nutrizione + focus giornaliero)
-- Check giornaliero (allenamento, alimentazione, idratazione)
-- Sistema XP + livello
-- Streak giornaliera
-- Dashboard progresso con storico recente
-
-## Immagine Levellino Personalizzata
-
-Per usare un artwork come quello che mi hai mostrato:
-
-1. Salva il file immagine in `frontend/public/levellino-chibi.png`
-2. Riavvia il frontend se e gia in esecuzione
-
-Il componente usera automaticamente l'immagine. Se manca il file, torna al badge `LV` come fallback.
-
-## API Disponibili
-
-- `GET /api/health`
-- `POST /api/onboarding`
-- `POST /api/progress/log`
-- `GET /api/progress/:user_id`
-
-## Setup Rapido Locale con Docker (Consigliato)
-
-1. Dalla root progetto:
-
-```bash
-docker compose up --build
+```json
+{
+  "user_id": 1,
+  "log_date": "2026-09-22",
+  "workout_done": true,
+  "nutrition_done": true,
+  "hydration_done": false,
+  "notes": "Oggi buona energia"
+}
 ```
 
-2. Accesso servizi:
+### GET /api/progress/:user_id
+- Uso: recupero progresso completo utente
+- Include: XP totale, livello, streak, log recenti
 
-- Frontend: `http://localhost:4173`
-- Backend: `http://localhost:8080/api/health`
-- DB SQLite persistito in volume Docker `sqlite_data`
+---
 
-Le migrazioni SQL vengono applicate all'avvio del backend e il DB viene inizializzato automaticamente.
+## 7) Modello Dati
 
-## Setup Manuale (Senza Docker)
+Tabelle principali:
+- `user_profiles`
+  - profilo e preferenze base utente
+- `daily_logs`
+  - missioni giornaliere, XP ottenuto, nota, data
 
-### 1) Backend Rust
+Relazione:
+- `daily_logs.user_id` -> `user_profiles.id` (1:N)
+
+---
+
+## 8) Setup Locale (Consigliato)
+
+Prerequisiti:
+- Node.js installato
+- Rust toolchain installata
+
+### 8.1 Backend
 
 ```bash
 cd backend
@@ -102,10 +183,12 @@ copy .env.example .env
 cargo run
 ```
 
-Nota: se non crei `.env`, il backend usa in automatico questo default locale:
-`sqlite://training_leveling.db`
+Backend API su:
+- http://localhost:8080/api/health
 
-### 2) Frontend React
+### 8.2 Frontend
+
+In un secondo terminale:
 
 ```bash
 cd frontend
@@ -114,37 +197,100 @@ npm install
 npm run dev
 ```
 
-Frontend locale su `http://localhost:5173`.
+Frontend su:
+- http://localhost:5173
 
-## Deploy Online (Pronto per partire)
+---
 
-Il progetto e gia predisposto per deployment containerizzato.
+## 9) Setup con Docker (Opzionale)
 
-Strategia consigliata:
+Se Docker Desktop e disponibile:
 
-1. Frontend su Vercel/Netlify (build Vite)
-2. Backend Rust container su Render/Fly.io/Railway/Azure Container Apps
-3. SQLite per MVP, poi migrazione a MySQL/PostgreSQL quando passi a multi-utente avanzato
+```bash
+docker compose up --build
+```
 
-### Variabili principali
+Servizi:
+- Frontend: http://localhost:4173
+- Backend: http://localhost:8080/api/health
 
-- Frontend: `VITE_API_BASE_URL`
-- Backend: `APP_HOST`, `APP_PORT`, `DATABASE_URL`, `FRONTEND_ORIGIN`
+---
 
-## Note su "immagini Solo Leveling"
+## 10) Immagine Levellino Personalizzata
 
-Per evitare problemi di copyright, usa asset originali o royalty-free in stile anime/fantasy (non materiale copiato da opere protette).
+Per usare un artwork custom:
+1. salva l'immagine in `frontend/public/levellino-chibi.png`
+2. riavvia frontend
 
-## Evoluzioni Raccomandate
+Il componente Levellino usera automaticamente l'immagine.
+Se il file manca, resta il fallback grafico LV.
 
-- Autenticazione (JWT + refresh token)
-- Profilo avanzato (massa grassa, target calorie, macro)
-- Piano settimanale completo modificabile da UI
-- Chat Levellino AI (LLM) con storico conversazioni
-- Notifiche push giornaliere
-- Upload progress photo e grafici trend
-- Ruolo admin/coach per creare template piani
+---
 
-## Stato Attuale
+## 11) Struttura Cartelle
 
-La base full-stack e pronta: file, cartelle, backend, frontend, DB schema, Docker, API e UI iniziale. Da qui puoi iterare su feature premium e design finale.
+```text
+TrainingLeveling/
+  backend/
+    migrations/
+      001_init.sql
+    src/
+      routes/
+      services/
+      config.rs
+      main.rs
+      models.rs
+      state.rs
+    .env.example
+    Cargo.toml
+    Dockerfile
+
+  frontend/
+    public/
+    src/
+      api/
+      components/
+      hooks/
+      utils/
+      App.tsx
+      main.tsx
+      styles.css
+      types.ts
+    .env.example
+    package.json
+    tailwind.config.js
+    vite.config.ts
+    Dockerfile
+
+  docs/
+    images/
+      architecture-overview.svg
+      onboarding-flow.svg
+      daily-level-loop.svg
+
+  docker-compose.yml
+  .env.example
+  README.md
+```
+
+---
+
+## 12) Roadmap Evolutiva
+
+- autenticazione JWT + refresh token
+- profilo avanzato con macro/calorie dinamiche
+- chat Levellino AI con coaching contestuale
+- notifiche push missione giornaliera
+- analytics trend settimanale/mensile
+- migrazione DB a MySQL/PostgreSQL per scalare
+
+---
+
+## 13) Stato Attuale
+
+La base e gia operativa end-to-end:
+- frontend completo
+- backend API completo
+- database locale auto-migrato
+- UX con onboarding, piano, check giornaliero e leveling
+- documentazione tecnica completa con diagrammi
