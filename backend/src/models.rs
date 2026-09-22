@@ -2,19 +2,6 @@ use chrono::{DateTime, NaiveDate, Utc};
 use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
-#[derive(Debug, Serialize, Deserialize, FromRow)]
-pub struct UserProfile {
-    pub id: i64,
-    pub nickname: String,
-    pub age: i32,
-    pub height_cm: i32,
-    pub weight_kg: f32,
-    pub goal: String,
-    pub activity_level: String,
-    pub food_style: String,
-    pub created_at: DateTime<Utc>,
-}
-
 #[derive(Debug, Deserialize)]
 pub struct OnboardingRequest {
     pub nickname: String,
