@@ -11,7 +11,7 @@ export function LevellinoGuide({ text }: LevellinoGuideProps) {
       <div className="relative flex items-center gap-4">
         <div className="animate-floaty">
           <div className="h-20 w-20 animate-pulseAura rounded-full bg-gradient-to-br from-gold via-flame to-aura p-1">
-            <div className="flex h-full w-full items-center justify-center rounded-full bg-ink text-3xl">\u2728</div>
+            <div className="flex h-full w-full items-center justify-center rounded-full bg-ink text-2xl font-black text-sky">LV</div>
           </div>
         </div>
 

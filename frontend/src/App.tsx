@@ -3,13 +3,13 @@ import { Dashboard } from "./components/Dashboard";
 import { LevellinoGuide } from "./components/LevellinoGuide";
 import { OnboardingForm } from "./components/OnboardingForm";
 import type { OnboardingResponse } from "./types";
-import { getUserId, saveUserId } from "./utils/storage";
+import { getOnboardingResponse, getUserId, saveOnboardingResponse, saveUserId } from "./utils/storage";
 
 const defaultLevellinoLine =
   "Ciao, io sono Levellino. Ti preparo una missione personalizzata stile level-up: allenamento, alimentazione e progressione giornaliera.";
 
 export default function App() {
-  const [onboarding, setOnboarding] = useState<OnboardingResponse | null>(null);
+  const [onboarding, setOnboarding] = useState<OnboardingResponse | null>(() => getOnboardingResponse());
   const [userId, setUserId] = useState<number | null>(() => getUserId());
 
   const title = useMemo(() => {
@@ -23,6 +23,7 @@ export default function App() {
     setOnboarding(response);
     setUserId(response.user_id);
     saveUserId(response.user_id);
+    saveOnboardingResponse(response);
   }
 
   return (

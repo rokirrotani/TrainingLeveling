@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, type FormEvent } from "react";
 import { submitDailyLog } from "../api/client";
 import { useProgress } from "../hooks/useProgress";
 import type { OnboardingResponse } from "../types";
@@ -36,7 +36,7 @@ export function Dashboard({ userId, onboarding }: DashboardProps) {
     return Math.min(100, Math.max(0, Math.round(fraction * 100)));
   }, [progress]);
 
-  async function handleDailyCheckin(event: React.FormEvent<HTMLFormElement>) {
+  async function handleDailyCheckin(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     setSaveError(null);

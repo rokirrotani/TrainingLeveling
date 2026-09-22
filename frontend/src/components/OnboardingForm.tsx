@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { createOnboardingProfile } from "../api/client";
 import type { GoalType, OnboardingInput, OnboardingResponse } from "../types";
 
@@ -50,7 +50,7 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
     });
   }
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     if (!form.nickname.trim()) {

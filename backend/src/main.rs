@@ -9,7 +9,7 @@ use config::AppConfig;
 use routes::create_router;
 use sqlx::mysql::MySqlPoolOptions;
 use std::time::Duration;
-use tower_http::cors::{Any, CorsLayer};
+use tower_http::cors::CorsLayer;
 use tower_http::trace::TraceLayer;
 use tracing::info;
 
@@ -33,8 +33,10 @@ async fn main() -> anyhow::Result<()> {
 
     let state = state::AppState { db };
 
+    let allowed_origin = config.frontend_origin.parse::<axum::http::HeaderValue>()?;
+
     let cors = CorsLayer::new()
-        .allow_origin(Any)
+        .allow_origin(allowed_origin)
         .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
         .allow_headers([header::CONTENT_TYPE, header::ACCEPT]);
 
