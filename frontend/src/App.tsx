@@ -9,12 +9,12 @@ const defaultLevellinoLine =
   "Ciao, io sono Levellino. Ti preparo una missione personalizzata stile level-up: allenamento, alimentazione e progressione giornaliera.";
 
 const experienceTags = [
-  "Progressione XP",
-  "Missioni quotidiane",
-  "Routine fitness",
-  "Nutrizione smart",
-  "Streak tracker",
-  "Levellino coach",
+  "ARISE mode",
+  "Quest page flow",
+  "Chibi mentor",
+  "XP progressione",
+  "Missioni giornaliere",
+  "Streak chain",
 ];
 
 export default function App() {
@@ -23,9 +23,9 @@ export default function App() {
 
   const title = useMemo(() => {
     if (userId && onboarding) {
-      return "La tua dashboard di crescita";
+      return "Command Center del tuo Levelling";
     }
-    return "Inizia la tua trasformazione con Levellino";
+    return "ARISE: attiva il tuo sistema di crescita";
   }, [onboarding, userId]);
 
   function handleCompleted(response: OnboardingResponse) {
@@ -46,13 +46,13 @@ export default function App() {
         <header className="hero-panel reveal-rise">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <p className="hero-kicker">TrainingLeveling</p>
-            <span className="status-pill">Live XP Engine</span>
+            <span className="status-pill">Shadow Quest UI</span>
           </div>
 
           <h1 className="hero-title">{title}</h1>
           <p className="hero-description">
-            Una plancia evolutiva ad alta energia per allenamento, nutrizione e consistency: meno attrito, piu ritmo,
-            piu risultati.
+            Interfaccia cinematica, onboarding a tappe e guida chibi: ogni scelta cambia pagina, ogni missione genera
+            XP, ogni giorno alza il tuo livello.
           </p>
 
           <div className="tag-cloud">
