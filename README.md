@@ -248,6 +248,8 @@ Ritorna livello, XP, streak e storico log.
 ### Errore `Failed to fetch` nel frontend
 - verifica backend su http://localhost:8080/api/health
 - controlla [frontend/.env](frontend/.env) con `VITE_API_BASE_URL=http://localhost:8080`
+- se apri il frontend da un IP LAN (es. `http://172.x.x.x:5173`), aggiungi quell'origine in [backend/.env](backend/.env):
+  `FRONTEND_ORIGINS=http://localhost:5173,http://127.0.0.1:5173,http://172.x.x.x:5173`
 
 ### Porta occupata
 - backend usa 8080

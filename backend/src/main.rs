@@ -4,12 +4,13 @@ mod routes;
 mod services;
 mod state;
 
+use anyhow::Context;
 use axum::http::{header, Method};
 use config::AppConfig;
 use routes::create_router;
 use sqlx::sqlite::SqlitePoolOptions;
 use std::time::Duration;
-use tower_http::cors::CorsLayer;
+use tower_http::cors::{AllowOrigin, CorsLayer};
 use tower_http::trace::TraceLayer;
 use tracing::info;
 
@@ -33,10 +34,18 @@ async fn main() -> anyhow::Result<()> {
 
     let state = state::AppState { db };
 
-    let allowed_origin = config.frontend_origin.parse::<axum::http::HeaderValue>()?;
+    let allowed_origins = config
+        .frontend_origins
+        .iter()
+        .map(|origin| {
+            origin
+                .parse::<axum::http::HeaderValue>()
+                .with_context(|| format!("Invalid FRONTEND_ORIGIN value: {origin}"))
+        })
+        .collect::<anyhow::Result<Vec<_>>>()?;
 
     let cors = CorsLayer::new()
-        .allow_origin(allowed_origin)
+        .allow_origin(AllowOrigin::list(allowed_origins))
         .allow_methods([Method::GET, Method::POST, Method::OPTIONS])
         .allow_headers([header::CONTENT_TYPE, header::ACCEPT]);
 
@@ -46,6 +55,7 @@ async fn main() -> anyhow::Result<()> {
     let listener = tokio::net::TcpListener::bind(&bind_addr).await?;
 
     info!("TrainingLeveling API listening on {bind_addr}");
+    info!("CORS allowed origins: {}", config.frontend_origins.join(", "));
     axum::serve(listener, app).await?;
 
     Ok(())

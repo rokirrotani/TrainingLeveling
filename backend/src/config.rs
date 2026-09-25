@@ -6,7 +6,7 @@ pub struct AppConfig {
     pub app_host: String,
     pub app_port: u16,
     pub database_url: String,
-    pub frontend_origin: String,
+    pub frontend_origins: Vec<String>,
 }
 
 impl AppConfig {
@@ -21,14 +21,29 @@ impl AppConfig {
         let database_url = env::var("DATABASE_URL")
             .unwrap_or_else(|_| "sqlite://training_leveling.db".to_string());
 
-        let frontend_origin = env::var("FRONTEND_ORIGIN")
-            .unwrap_or_else(|_| "http://localhost:5173".to_string());
+        let frontend_origins = if let Ok(raw_origins) = env::var("FRONTEND_ORIGINS") {
+            let origins = raw_origins
+                .split(',')
+                .map(str::trim)
+                .filter(|value| !value.is_empty())
+                .map(ToOwned::to_owned)
+                .collect::<Vec<_>>();
+
+            if origins.is_empty() {
+                vec!["http://localhost:5173".to_string(), "http://127.0.0.1:5173".to_string()]
+            } else {
+                origins
+            }
+        } else {
+            let single_origin = env::var("FRONTEND_ORIGIN").unwrap_or_else(|_| "http://localhost:5173".to_string());
+            vec![single_origin]
+        };
 
         Ok(Self {
             app_host,
             app_port,
             database_url,
-            frontend_origin,
+            frontend_origins,
         })
     }
 }
