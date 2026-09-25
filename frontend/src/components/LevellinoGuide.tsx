@@ -4,36 +4,46 @@ interface LevellinoGuideProps {
   text: string;
 }
 
+const quickHints = ["Pronto in 2 minuti", "Check giornaliero", "Feedback continuo"];
+
 export function LevellinoGuide({ text }: LevellinoGuideProps) {
   const [imageLoaded, setImageLoaded] = useState(true);
 
   return (
-    <section className="relative overflow-hidden rounded-3xl border border-aura/40 bg-ink/80 p-6 shadow-aura backdrop-blur-sm">
-      <div className="absolute -right-10 -top-10 h-36 w-36 rounded-full bg-aura/20 blur-2xl" />
-      <div className="absolute -left-10 -bottom-12 h-36 w-36 rounded-full bg-flame/20 blur-2xl" />
+    <section className="guide-panel glass-card">
+      <div className="guide-avatar-shell">
+        <span className="guide-orbit guide-orbit--one" />
+        <span className="guide-orbit guide-orbit--two" />
 
-      <div className="relative flex items-center gap-4">
-        <div className="animate-floaty">
-          <div className="h-20 w-20 animate-pulseAura overflow-hidden rounded-full bg-gradient-to-br from-gold via-flame to-aura p-1">
-            {imageLoaded ? (
-              <img
-                src="/levellino-chibi.png"
-                alt="Levellino chibi"
-                className="h-full w-full rounded-full object-cover"
-                onError={() => setImageLoaded(false)}
-              />
-            ) : (
-              <div className="flex h-full w-full items-center justify-center rounded-full bg-ink text-2xl font-black text-sky">
-                LV
-              </div>
-            )}
-          </div>
+        <div className="guide-avatar">
+          {imageLoaded ? (
+            <img
+              src="/levellino-chibi.png"
+              alt="Levellino chibi"
+              className="h-full w-full rounded-full object-cover"
+              onError={() => setImageLoaded(false)}
+            />
+          ) : (
+            <div className="guide-avatar-fallback">LV</div>
+          )}
+        </div>
+      </div>
+
+      <div className="grid gap-3">
+        <div className="flex flex-wrap items-center gap-2">
+          <p className="hero-kicker">Levellino Companion</p>
+          <span className="status-pill">online</span>
         </div>
 
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-aura">Levellino</p>
-          <h2 className="text-xl font-semibold text-sky">Guida Chibi del Tuo Percorso</h2>
-          <p className="mt-2 max-w-xl text-sm text-sky/85">{text}</p>
+        <h2 className="guide-title">Il tuo coach visuale, sempre in sync con il piano</h2>
+        <p className="guide-text">{text}</p>
+
+        <div className="tag-cloud">
+          {quickHints.map((hint) => (
+            <span key={hint} className="badge-pill">
+              {hint}
+            </span>
+          ))}
         </div>
       </div>
     </section>

@@ -8,6 +8,15 @@ import { getOnboardingResponse, getUserId, saveOnboardingResponse, saveUserId } 
 const defaultLevellinoLine =
   "Ciao, io sono Levellino. Ti preparo una missione personalizzata stile level-up: allenamento, alimentazione e progressione giornaliera.";
 
+const experienceTags = [
+  "Progressione XP",
+  "Missioni quotidiane",
+  "Routine fitness",
+  "Nutrizione smart",
+  "Streak tracker",
+  "Levellino coach",
+];
+
 export default function App() {
   const [onboarding, setOnboarding] = useState<OnboardingResponse | null>(() => getOnboardingResponse());
   const [userId, setUserId] = useState<number | null>(() => getUserId());
@@ -27,21 +36,46 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[radial-gradient(circle_at_top,_#1b385b_0%,_#0f1a2b_45%,_#070b14_100%)] p-4 text-ink md:p-8">
-      <div className="mx-auto grid w-full max-w-6xl gap-6">
-        <header className="rounded-3xl border border-sky/20 bg-white/95 px-6 py-7 shadow-2xl">
-          <p className="text-xs uppercase tracking-[0.2em] text-ink/60">TrainingLeveling</p>
-          <h1 className="mt-2 text-3xl font-black leading-tight text-ink md:text-4xl">{title}</h1>
-          <p className="mt-3 max-w-3xl text-sm text-ink/75 md:text-base">
-            Crea un percorso completo e personalizzabile: obiettivi fitness, alimentazione, missioni giornaliere,
-            avanzamento a livelli e monitoraggio costante.
+    <div className="app-shell">
+      <div className="ambient-layer ambient-layer--one" />
+      <div className="ambient-layer ambient-layer--two" />
+      <div className="ambient-layer ambient-layer--three" />
+      <div className="noise-overlay" />
+
+      <main className="relative z-10 mx-auto grid w-full max-w-7xl gap-6 px-4 py-6 md:px-8 md:py-10">
+        <header className="hero-panel reveal-rise">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <p className="hero-kicker">TrainingLeveling</p>
+            <span className="status-pill">Live XP Engine</span>
+          </div>
+
+          <h1 className="hero-title">{title}</h1>
+          <p className="hero-description">
+            Una plancia evolutiva ad alta energia per allenamento, nutrizione e consistency: meno attrito, piu ritmo,
+            piu risultati.
           </p>
+
+          <div className="tag-cloud">
+            {experienceTags.map((tag) => (
+              <span key={tag} className="badge-pill">
+                {tag}
+              </span>
+            ))}
+          </div>
         </header>
 
-        <LevellinoGuide text={onboarding?.levellino_intro ?? defaultLevellinoLine} />
+        <div className="reveal-rise delay-150">
+          <LevellinoGuide text={onboarding?.levellino_intro ?? defaultLevellinoLine} />
+        </div>
 
-        {userId && onboarding ? <Dashboard userId={userId} onboarding={onboarding} /> : <OnboardingForm onCompleted={handleCompleted} />}
-      </div>
+        <div className="reveal-rise delay-300">
+          {userId && onboarding ? (
+            <Dashboard userId={userId} onboarding={onboarding} />
+          ) : (
+            <OnboardingForm onCompleted={handleCompleted} />
+          )}
+        </div>
+      </main>
     </div>
   );
 }

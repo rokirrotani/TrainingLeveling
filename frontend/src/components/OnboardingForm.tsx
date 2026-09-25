@@ -72,69 +72,75 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mt-6 grid gap-4 rounded-3xl border border-sky/15 bg-white/90 p-6 shadow-xl">
-      <div className="grid gap-2">
-        <label className="text-sm font-semibold text-ink">Come vuoi farti chiamare?</label>
-        <input
-          className="rounded-xl border border-sky/30 bg-white px-4 py-3 text-ink outline-none focus:border-aura"
-          value={form.nickname}
-          onChange={(event) => updateField("nickname", event.target.value)}
-          placeholder="Es. ShadowRunner"
-        />
+    <form onSubmit={handleSubmit} className="onboarding-panel glass-card">
+      <div className="grid gap-1">
+        <p className="hero-kicker">Avatar setup</p>
+        <h3 className="section-title">Configura il tuo profilo atleta</h3>
+        <p className="muted-copy">
+          Imposta i tuoi dati base: Levellino costruira una missione giornaliera piu precisa, chiara e motivante.
+        </p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <label className="grid gap-2 text-sm font-semibold text-ink">
-          Eta
+      <div className="grid gap-4 md:grid-cols-[1.3fr_1fr]">
+        <label className="field-label">
+          Come vuoi farti chiamare?
           <input
-            type="number"
-            min={13}
-            max={90}
-            className="rounded-xl border border-sky/30 px-3 py-2 font-normal"
-            value={form.age}
-            onChange={(event) => updateField("age", Number(event.target.value))}
+            className="field-input"
+            value={form.nickname}
+            onChange={(event) => updateField("nickname", event.target.value)}
+            placeholder="Es. ShadowRunner"
           />
         </label>
 
-        <label className="grid gap-2 text-sm font-semibold text-ink">
-          Altezza (cm)
-          <input
-            type="number"
-            min={120}
-            max={230}
-            className="rounded-xl border border-sky/30 px-3 py-2 font-normal"
-            value={form.height_cm}
-            onChange={(event) => updateField("height_cm", Number(event.target.value))}
-          />
-        </label>
+        <div className="grid grid-cols-3 gap-3">
+          <label className="field-label">
+            Eta
+            <input
+              type="number"
+              min={13}
+              max={90}
+              className="field-input"
+              value={form.age}
+              onChange={(event) => updateField("age", Number(event.target.value))}
+            />
+          </label>
 
-        <label className="grid gap-2 text-sm font-semibold text-ink">
-          Peso (kg)
-          <input
-            type="number"
-            min={35}
-            max={250}
-            step="0.1"
-            className="rounded-xl border border-sky/30 px-3 py-2 font-normal"
-            value={form.weight_kg}
-            onChange={(event) => updateField("weight_kg", Number(event.target.value))}
-          />
-        </label>
+          <label className="field-label">
+            Altezza
+            <input
+              type="number"
+              min={120}
+              max={230}
+              className="field-input"
+              value={form.height_cm}
+              onChange={(event) => updateField("height_cm", Number(event.target.value))}
+            />
+          </label>
+
+          <label className="field-label">
+            Peso
+            <input
+              type="number"
+              min={35}
+              max={250}
+              step="0.1"
+              className="field-input"
+              value={form.weight_kg}
+              onChange={(event) => updateField("weight_kg", Number(event.target.value))}
+            />
+          </label>
+        </div>
       </div>
 
       <div className="grid gap-3">
-        <p className="text-sm font-semibold text-ink">Obiettivo principale</p>
+        <p className="section-mini-title">Obiettivo principale</p>
         <div className="grid gap-3 md:grid-cols-3">
           {goalOptions.map((option) => (
             <button
               key={option.value}
               type="button"
               onClick={() => updateField("goal", option.value)}
-              className={`rounded-2xl border px-4 py-3 text-left transition ${
-                form.goal === option.value
-                  ? "border-aura bg-aura/20 text-ink"
-                  : "border-sky/30 bg-white text-ink/80 hover:border-aura/50"
-              }`}
+              className={`chip-choice ${form.goal === option.value ? "chip-choice--active" : ""}`}
             >
               {option.label}
             </button>
@@ -143,10 +149,10 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="grid gap-2 text-sm font-semibold text-ink">
+        <label className="field-label">
           Livello attuale
           <select
-            className="rounded-xl border border-sky/30 px-3 py-3 font-normal"
+            className="field-select"
             value={form.activity_level}
             onChange={(event) => updateField("activity_level", event.target.value as OnboardingInput["activity_level"])}
           >
@@ -156,10 +162,10 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
           </select>
         </label>
 
-        <label className="grid gap-2 text-sm font-semibold text-ink">
+        <label className="field-label">
           Stile alimentare
           <select
-            className="rounded-xl border border-sky/30 px-3 py-3 font-normal"
+            className="field-select"
             value={form.food_style}
             onChange={(event) => updateField("food_style", event.target.value as OnboardingInput["food_style"])}
           >
@@ -171,32 +177,24 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
       </div>
 
       <div className="grid gap-3">
-        <p className="text-sm font-semibold text-ink">Preferenze extra</p>
-        <div className="grid gap-2 md:grid-cols-2">
-          {preferenceOptions.map((option) => (
-            <label
-              key={option.value}
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-sky/25 bg-white px-3 py-2"
-            >
-              <input
-                type="checkbox"
-                checked={form.preferences.includes(option.value)}
-                onChange={() => togglePreference(option.value)}
-                className="h-4 w-4"
-              />
-              <span className="text-sm text-ink">{option.label}</span>
-            </label>
-          ))}
+        <p className="section-mini-title">Preferenze extra</p>
+        <div className="grid gap-3 md:grid-cols-2">
+          {preferenceOptions.map((option) => {
+            const isActive = form.preferences.includes(option.value);
+
+            return (
+              <label key={option.value} className={`toggle-card ${isActive ? "toggle-card--active" : ""}`}>
+                <input type="checkbox" checked={isActive} onChange={() => togglePreference(option.value)} className="h-4 w-4" />
+                <span>{option.label}</span>
+              </label>
+            );
+          })}
         </div>
       </div>
 
-      {error ? <p className="text-sm font-medium text-red-600">{error}</p> : null}
+      {error ? <p className="error-text">{error}</p> : null}
 
-      <button
-        type="submit"
-        disabled={loading}
-        className="rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-sky transition hover:scale-[1.01] hover:bg-[#16263f] disabled:cursor-not-allowed disabled:opacity-60"
-      >
+      <button type="submit" disabled={loading} className="submit-cta">
         {loading ? "Levellino sta creando il tuo percorso..." : "Inizia la missione"}
       </button>
     </form>
