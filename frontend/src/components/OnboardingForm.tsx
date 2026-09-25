@@ -182,7 +182,7 @@ export function OnboardingForm({ onCompleted }: OnboardingFormProps) {
       <section className="mentor-panel">
         <div className="mentor-avatar-wrap">
           <div className="mentor-avatar">
-            <img src="/levellino-chibi.png" alt="Levellino chibi" onError={(event) => ((event.currentTarget.style.display = "none"), undefined)} />
+            <img src="/chibi-levellino.svg" alt="Levellino chibi" onError={(event) => ((event.currentTarget.style.display = "none"), undefined)} />
             <span className="mentor-avatar-fallback">LV</span>
           </div>
         </div>

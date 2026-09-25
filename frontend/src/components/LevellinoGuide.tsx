@@ -18,7 +18,7 @@ export function LevellinoGuide({ text }: LevellinoGuideProps) {
         <div className="guide-avatar">
           {imageLoaded ? (
             <img
-              src="/levellino-chibi.png"
+              src="/chibi-levellino.svg"
               alt="Levellino chibi"
               className="h-full w-full rounded-full object-cover"
               onError={() => setImageLoaded(false)}
